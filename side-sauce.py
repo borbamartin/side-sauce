@@ -63,7 +63,7 @@ if jenkins_job_name is None or jenkins_build_number is None:
     user = '[{}]'.format(getpass.getuser())
     build_id = 'LOCAL BUILD ' + user + timestamp
 else:
-    build_id = jenkins_job_name + '[' + jenkins_build_number + ']'
+    build_id = jenkins_job_name + ' #' + jenkins_build_number
 
 logger.info('Sauce Build ID: ' + build_id)
 logger.info('Injecting Sauce steps to ' + str(len(side_json['tests'])) + ' tests')
