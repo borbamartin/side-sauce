@@ -28,4 +28,23 @@ the selenium command-line runner. The exported file will be named after the orig
 ### Running the script
 To run the file simply do: `python ./side-sauce.py`
 
-###### Please note this is a temporary workaround until the Selenium team adds the feature, or I get the time to contribute to it.
+
+## Report fixer
+Selenium IDE's command line runner gives you the option to export test results in JUnit format. When you set
+your suite to run in parallel, SIDE splits your tests into suites, resulting in a new suite per each test.
+The JUnit XML created by Jest sets every `<testsuite>` name to `undefined`, so when Jenkins parses it the results
+get overwritten, showing only 1 result, so if you run 10 tests from the same suite in parallel, Jenkins will show
+as if you would have executed 1 test only.
+
+The report fixer takes care of this, renaming every test suite to match the name of your test case, as well as
+adding a `SIDE` default package, and a class name that will match the name of your SIDE project for a clean look
+to your JUnit results in Jenkins.
+
+Make sure the results are outputted to the same folder as your `report-fixer.py` file, and then just run it with
+`python ./report-fixer.py` after your SIDE execution has finished.
+
+Keep in mind that if the SIDE execution fails this step won't run unless you configure it as a post-build action,
+or if you capture the exit code and throw it after the reporter finishes the execution.
+
+
+###### Please note these are temporary workarounds until the Selenium team adds-fixes the features, or I get the time to contribute.
