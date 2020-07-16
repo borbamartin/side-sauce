@@ -17,8 +17,8 @@ Build ID will be `LOCAL BUILD [{user}][{timestamp}]` if run locally. When run fr
 will match Jenkins's job name and build number.
 
 #### Test result
-Test result can only be sent if the test passes, so you will see 2 types of results: Passed and Completed.
-If a test is marked as "Completed" that will most likely mean it has failed.
+Test result cannot be sent if a test fails, since the execution won't reach that step, therefore we set the
+test as initially failing. If the test is completed successfully it will be marked as passed.
 
 ### File placement
 Make sure you include this script in the same folder as your .side file, and that you run it before running

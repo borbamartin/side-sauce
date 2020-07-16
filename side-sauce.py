@@ -17,20 +17,11 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 # SAUCE STEP TEMPLATES
-job_info_template = {
+step_template = {
     'id': '',
     'comment': '',
     'command': 'executeScript',
     'target': '',
-    'targets': [],
-    'value': ''
-}
-
-job_status_template = {
-    'id': '',
-    'comment': '',
-    'command': 'executeScript',
-    'target': 'sauce:job-result=passed',
     'targets': [],
     'value': ''
 }
@@ -71,23 +62,30 @@ logger.info('Injecting Sauce steps to ' + str(len(side_json['tests'])) + ' tests
 # INJECT SAUCE STEPS
 for test in side_json['tests']:
     # Set job build step
-    job_build_step = deepcopy(job_info_template)
+    job_build_step = deepcopy(step_template)
     job_build_step['id'] = str(uuid.uuid4())
     job_build_step['target'] = 'sauce:job-build=' + build_id
 
     # Set job name step
-    job_name_step = deepcopy(job_info_template)
+    job_name_step = deepcopy(step_template)
     job_name_step['id'] = str(uuid.uuid4())
     job_name_step['target'] = 'sauce:job-name=' + test['name']
 
-    # Set job status step
-    job_status_step = deepcopy(job_status_template)
-    job_status_step['id'] = str(uuid.uuid4())
+    # Set job failed step
+    job_failed_step = deepcopy(step_template)
+    job_failed_step['id'] = str(uuid.uuid4())
+    job_failed_step['target'] = 'sauce:job-result=failed'
+
+    # Set job passed step
+    job_passed_step = deepcopy(step_template)
+    job_passed_step['id'] = str(uuid.uuid4())
+    job_passed_step['target'] = 'sauce:job-result=passed'
 
     # Insert steps
     test['commands'].insert(0, job_build_step)
     test['commands'].insert(1, job_name_step)
-    test['commands'].append(job_status_step)
+    test['commands'].insert(2, job_failed_step)
+    test['commands'].append(job_passed_step)
 
 new_side_filename = side_filename.split('.')
 new_side_filename = new_side_filename[0] + '-sauce.side'
