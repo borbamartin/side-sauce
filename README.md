@@ -6,8 +6,8 @@ One issue when running Selenium IDE tests on Sauce Labs is that test information
 up with a bunch of "Unnamed job xxx", with no test result or build grouping, which makes reviewing results 
 difficult and time-consuming.
 
-This script will pick the first .side file it finds in the folder you run it from, parse it and add 
-some steps in order to set the test name, build and result for each test.
+This script will grab every `.side` file it finds in the folder you run it from, parse it and add 
+the steps to set the name, build and result for each test.
 
 #### Test name
 Test name will match the one you set in Selenium IDE.
@@ -40,8 +40,12 @@ The report fixer takes care of this, renaming every test suite to match the name
 adding a `SIDE` default package, and a class name that will match the name of your SIDE project for a clean look
 to your JUnit results in Jenkins.
 
-Make sure the results are outputted to the same folder as your `report-fixer.py` file, and then just run it with
-`python ./report-fixer.py` after your SIDE execution has finished.
+### File placement
+Make sure the results are outputted to `/results`. This path is relative to where your `report-fixer.py` file 
+is placed. Please consider the script will modify every `XML` file in that path, so it should not be shared. 
+
+### Running the script
+Simply do: `python ./report-fixer.py` after your SIDE execution has finished.
 
 Keep in mind that if the SIDE execution fails this step won't run unless you configure it as a post-build action,
 or if you capture the exit code and throw it after the reporter finishes the execution.
