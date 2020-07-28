@@ -15,9 +15,11 @@ logger.addHandler(handler)
 
 # START
 logger.info('Starting...\n\nSIDE REPORT FIXER\n')
-logger.info('Searching for .xml files...')
+logger.info('Searching for .xml files in \'reports\' directory...')
 
 reports = []
+
+os.chdir('reports')
 
 for f in os.listdir('.'):
     if f.endswith('.xml'):
